@@ -13,10 +13,11 @@ export default (part) => {
     paperless,
     macro,
     options,
+    measurements,
     utils,
   } = part.shorthand()
 
-  points.anchor = points.hps.clone()
+  points.anchor = points.cbHem.clone()
 
   // Adapt the shoulder seam according to the relevant options
   // Note: s3 stands for Shoulder Seam Shift
@@ -103,21 +104,31 @@ export default (part) => {
       .setRender(false)
   }
 
-  // Seamline
-  paths.saBase = new Path()
+  // Paths
+  paths.hemBase = new Path()
     .move(points.cbHem)
     .line(points.hem)
-    .line(points.armhole)
+    .setRender(false)
+
+  paths.saBase = new Path()
+    .move(points.hem)
+    .line(points.hips)
+    .curve(points.hipsCp2, points.waistCp1, points.waist)
+    .curve(points.waistCp2, points.chestCp1, points.chest)
+    ._curve(points.chestCp2, points.armhole)
     .curve(points.armholeCp2, points.armholeHollowCp1, points.armholeHollow)
     .curve(points.armholeHollowCp2, points.armholePitchCp1, points.armholePitch)
     .join(paths.backArmhole)
     .line(points.s3CollarSplit)
     .join(paths.backCollar)
     .setRender(false)
+
   paths.seam = new Path()
     .move(points.cbNeck)
-    .line(points.cbHips)
+    .line(points.cbHem)
+    .join(paths.hemBase)
     .join(paths.saBase)
+    .close()
     .attr('class', 'fabric')
 
   // Store lengths to fit sleeve
@@ -128,19 +139,21 @@ export default (part) => {
   if (complete) {
     macro('cutonfold', {
       from: points.cbNeck,
-      to: points.cbHips,
+      to: points.cbHem,
       grainline: true,
     })
 
     macro('title', { at: points.title, nr: 2, title: 'back' })
     snippets.armholePitchNotch = new Snippet('bnotch', points.armholePitch)
+    paths.chest = new Path().move(points.cbChest).line(points.chest).attr('class', 'help')
     paths.waist = new Path().move(points.cbWaist).line(points.waist).attr('class', 'help')
+    paths.hips = new Path().move(points.cbHips).line(points.hips).attr('class', 'help')
     if (sa) {
       paths.sa = paths.saBase
         .offset(sa)
         .attr('class', 'fabric sa')
         .line(points.cbNeck)
-        .move(points.cbHips)
+        .move(points.cbHem)
       paths.sa.line(paths.sa.start())
     }
 

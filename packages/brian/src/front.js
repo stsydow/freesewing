@@ -113,22 +113,31 @@ export default (part) => {
   // Front neckline points
   points.neckCp2 = new Point(points.neckCp2Front.x, points.neckCp2Front.y)
 
-  // Seamline
-  paths.saBase = new Path()
+  // Paths
+  paths.hemBase = new Path()
     .move(points.cfHem)
     .line(points.hem)
-    .line(points.armhole)
+    .setRender(false)
+
+  paths.saBase = new Path()
+    .move(points.hem)
+    .line(points.hips)
+    .curve(points.hipsCp2, points.waistCp1, points.waist)
+    .curve(points.waistCp2, points.chestCp1, points.chest)
+    ._curve(points.chestCp2, points.armhole)
     .curve(points.armholeCp2, points.armholeHollowCp1, points.armholeHollow)
     .curve(points.armholeHollowCp2, points.armholePitchCp1, points.armholePitch)
     .join(paths.frontArmhole)
     .line(points.s3CollarSplit)
     .join(paths.frontCollar)
+    .setRender(false)
 
-  paths.saBase.render = false
   paths.seam = new Path()
     .move(points.cfNeck)
     .line(points.cfHem)
+    .join(paths.hemBase)
     .join(paths.saBase)
+    .close()
     .attr('class', 'fabric')
 
   // Store lengths to fit sleeve
@@ -150,7 +159,7 @@ export default (part) => {
         .offset(sa)
         .attr('class', 'fabric sa')
         .line(points.cfNeck)
-        .move(points.cfHips)
+        .move(points.cfHem)
       paths.sa.line(paths.sa.start())
     }
 

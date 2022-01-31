@@ -19,6 +19,7 @@ export default (part) => {
   // Center back (cb) vertical axis
   points.cbHps = new Point(0, 0)
   points.cbNeck = new Point(0, options.backNeckCutout * measurements.neck)
+  points.cbChest = new Point(0, measurements.hpsToBust)
   points.cbWaist = new Point(0, measurements.hpsToWaistBack)
   points.cbHips = new Point(0, points.cbWaist.y + measurements.waistToHips)
 
@@ -44,13 +45,27 @@ export default (part) => {
   // Shoulder should never be higher than HPS
   if (points.shoulder.y < points.cbHps.y) points.shoulder = new Point(points.shoulder.x, 0)
 
+
   points.cbHem = new Point(0, points.cbHips.y * (1 + options.lengthBonus))
 
   // Side back (cb) vertical axis
-  points.armhole = new Point((measurements.chest * (1 + options.chestEase)) / 4, points.cbArmhole.y)
-  points.waist = new Point(points.armhole.x, points.cbWaist.y)
-  points.hips = new Point(points.armhole.x, points.cbHips.y)
-  points.hem = new Point(points.armhole.x, points.cbHem.y)
+  points.chest = new Point((measurements.chest * (1 + options.chestEase)) / 4, points.cbChest.y)
+  let xArmhole = points.chest.x
+  if(measurements.highBust !== undefined){
+    xArmhole = measurements.highBust * (1 + options.chestEase) / 4
+  }
+  points.armhole = new Point(xArmhole, points.cbArmhole.y)
+  points.waist = new Point((measurements.waist * (1 + options.waistEase)) / 4, points.cbWaist.y)
+  points.hips = new Point((measurements.hips * (1 + options.hipsEase)) / 4, points.cbHips.y)
+  points.hem = new Point(points.hips.x, points.cbHem.y)
+
+  //  Side shaping
+  points.hipsCp2 = points.hips.shift(90, measurements.waistToHips / 3)
+  points.waistCp1 = points.waist.shift(-90, measurements.waistToHips / 3)
+  let waistToBust = (measurements.hpsToWaistBack - measurements.hpsToBust);
+  points.waistCp2 = points.waist.shift(90, waistToBust / 3)
+  points.chestCp1 = points.chest.shift(-90, waistToBust / 3)
+  points.chestCp2 = points.chest.shift(90, (measurements.hpsToBust - points.cbArmhole.y) / 2)
 
   // Armhhole
   points.armholePitch = new Point(
