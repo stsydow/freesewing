@@ -19,6 +19,7 @@ export default {
       'hipsEase',
       'lengthBonus',
       'sleeveLengthBonus',
+      'draftForHighBust',
     ],
     style: ['s3Collar', 's3Armhole'],
     advanced: [
@@ -82,9 +83,10 @@ export default {
   hide: ['base', 'sleevecap'],
   options: {
     // Constants
-    brianFitSleeve: true,
-    brianFitCollar: true,
+    brianFitSleeve: { bool: true },
+    brianFitCollar: { bool: true },
     collarFactor: 4.8,
+    draftForHighBust: { bool: false },
 
     // Percentages
     acrossBackFactor: { pct: 97, min: 93, max: 100 },

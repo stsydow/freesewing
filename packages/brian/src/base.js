@@ -51,8 +51,15 @@ export default (part) => {
   // Side back (cb) vertical axis
   points.chest = new Point((measurements.chest * (1 + options.chestEase)) / 4, points.cbChest.y)
   let xArmhole = points.chest.x
-  if(measurements.highBust !== undefined){
-    xArmhole = measurements.highBust * (1 + options.chestEase) / 4
+  if(options.draftForHighBust && measurements.highBust){
+    points.chest = new Point((measurements.bust * (1 + options.chestEase)) / 4, points.cbChest.y)
+    let yOffsetArmhole = points.cbChest.y - points.cbArmhole.y
+    if(yOffsetArmhole > 0) {
+      xArmhole = measurements.highBust * (1 + options.chestEase) / 4
+    } else {
+
+      xArmhole
+    }
   }
   points.armhole = new Point(xArmhole, points.cbArmhole.y)
   points.waist = new Point((measurements.waist * (1 + options.waistEase)) / 4, points.cbWaist.y)

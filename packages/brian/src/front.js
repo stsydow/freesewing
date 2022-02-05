@@ -119,15 +119,32 @@ export default (part) => {
     .line(points.hem)
     .setRender(false)
 
+  paths.fArmhole = new Path()
+    .move(points.armhole)
+    .curve(points.armholeCp2, points.armholeHollowCp1, points.armholeHollow)
+    .curve(points.armholeHollowCp2, points.armholePitchCp1, points.armholePitch)
+    .join(paths.frontArmhole)
+    .setRender(false)
+
+  if( points.armhole.y < points.chest.y) {
+    paths.fChest = new Path()
+      .move(points.waist)
+      .curve(points.waistCp2, points.chestCp1, points.chest)
+      .curve_(points.chestCp2, points.armhole)
+      .setRender(false)
+  } else {
+    paths.fChest = new Path()
+      .move(points.waist)
+      .curve(points.waistCp2, points.chestCp1, points.armhole)
+      .setRender(false)
+  }
+
   paths.saBase = new Path()
     .move(points.hem)
     .line(points.hips)
     .curve(points.hipsCp2, points.waistCp1, points.waist)
-    .curve(points.waistCp2, points.chestCp1, points.chest)
-    ._curve(points.chestCp2, points.armhole)
-    .curve(points.armholeCp2, points.armholeHollowCp1, points.armholeHollow)
-    .curve(points.armholeHollowCp2, points.armholePitchCp1, points.armholePitch)
-    .join(paths.frontArmhole)
+    .join(paths.fChest)
+    .join(paths.fArmhole)
     .line(points.s3CollarSplit)
     .join(paths.frontCollar)
     .setRender(false)
