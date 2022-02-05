@@ -20,6 +20,8 @@ export default {
       'lengthBonus',
       'sleeveLengthBonus',
       'draftForHighBust',
+      'brianFitSleeve',
+      'brianFitCollar'
     ],
     style: ['s3Collar', 's3Armhole'],
     advanced: [
