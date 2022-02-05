@@ -19,9 +19,7 @@ export default {
       'hipsEase',
       'lengthBonus',
       'sleeveLengthBonus',
-      'draftForHighBust',
-      'brianFitSleeve',
-      'brianFitCollar'
+      'draftForHighBust'
     ],
     style: ['s3Collar', 's3Armhole'],
     advanced: [
@@ -52,8 +50,10 @@ export default {
           'sleevecapQ3Spread2',
           'sleevecapQ4Spread1',
           'sleevecapQ4Spread2',
+          'brianFitSleeve',
         ],
       },
+      'brianFitCollar'
     ],
   },
   measurements: [
@@ -69,8 +69,8 @@ export default {
     'shoulderToShoulder',
     'shoulderToWrist',
     'wrist',
+    'highBust'
   ],
-  optionalMeasurements: ['highBust'],
   dependencies: {
     back: 'base',
     front: 'back',

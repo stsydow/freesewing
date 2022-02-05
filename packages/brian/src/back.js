@@ -6,6 +6,7 @@ export default (part) => {
     sa,
     points,
     Path,
+    Point,
     paths,
     Snippet,
     snippets,
@@ -117,16 +118,16 @@ export default (part) => {
     .join(paths.backArmhole)
     .setRender(false)
 
-  if( points.armhole.y < points.chest.y) {
-    paths.bChest = new Path()
+  if( points.armhole.y < points.bust.y) {
+    paths.bBust = new Path()
       .move(points.waist)
-      .curve(points.waistCp2, points.chestCp1, points.chest)
-      .curve_(points.chestCp2, points.armhole)
+      .curve(points.waistCp2, points.bustCp1, points.bust)
+      .curve_(points.bustCp2, points.armhole)
       .setRender(false)
   } else {
-    paths.bChest = new Path()
+    paths.bBust = new Path()
       .move(points.waist)
-      .curve(points.waistCp2, points.chestCp1, points.armhole)
+      .curve(points.waistCp2, points.bustCp1, points.armhole)
       .setRender(false)
   }
 
@@ -134,7 +135,7 @@ export default (part) => {
     .move(points.hem)
     .line(points.hips)
     .curve(points.hipsCp2, points.waistCp1, points.waist)
-    .join(paths.bChest)
+    .join(paths.bBust)
     .join(paths.bArmhole)
     .line(points.s3CollarSplit)
     .join(paths.backCollar)
@@ -162,7 +163,10 @@ export default (part) => {
 
     macro('title', { at: points.title, nr: 2, title: 'back' })
     snippets.armholePitchNotch = new Snippet('bnotch', points.armholePitch)
-    paths.chest = new Path().move(points.cbChest).line(points.chest).attr('class', 'help')
+    snippets.waistNotch = new Snippet('bnotch', points.waist)
+    if(points.bust.y - 10 > points.armhole.y) {
+      snippets.bustNotch = new Snippet('bnotch', points.bust)
+    }
     paths.waist = new Path().move(points.cbWaist).line(points.waist).attr('class', 'help')
     paths.hips = new Path().move(points.cbHips).line(points.hips).attr('class', 'help')
     if (sa) {
